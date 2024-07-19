@@ -34,7 +34,15 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/nest-ms-e2e/**/*"]
+      "exclude": [
+        "apps/nest-ms-e2e/**/*",
+        "apps/api-gateway-e2e/**/*",
+        "apps/auth-gateway-e2e/**/*",
+        "apps/auth-service-e2e/**/*",
+        "apps/movie-service-e2e/**/*",
+        "apps/log-service-e2e/**/*"
+      ]
     }
-  ]
+  ],
+  "defaultProject": "api-gateway"
 }

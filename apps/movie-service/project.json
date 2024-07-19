@@ -1,0 +1,24 @@
+{
+  "name": "movie-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/movie-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "movie-service:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "movie-service:build:development"
+        },
+        "production": {
+          "buildTarget": "movie-service:build:production"
+        }
+      }
+    }
+  }
+}
