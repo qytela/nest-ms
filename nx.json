@@ -1,10 +1,7 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
@@ -26,21 +23,13 @@
         "previewTargetName": "preview"
       }
     },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
     {
       "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      },
-      "exclude": [
-        "apps/api-gateway-e2e/**/*"
-      ]
+      "options": { "targetName": "test" },
+      "exclude": ["apps/api-gateway-e2e/**/*"]
     }
   ],
-  "defaultProject": "api-gateway"
+  "defaultProject": "api-gateway",
+  "nxCloudAccessToken": "Yzk2NDg1ZTctOTEyNy00Y2ZmLTliYTktNDkxZTA4ZTA5Zjk0fHJlYWQtd3JpdGU="
 }
