@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
-  login() {
-    return {
-      userId: 1,
-      token: 'xxxxxxxxxxxx',
-      roles: ['user'],
-    };
+  login(message: { username: string; password: string }) {
+    if (message.username === 'qytela' && message.password === '123123') {
+      return {
+        userId: 1,
+        token: 'xxxxxxxxxxxx',
+        roles: ['user'],
+      };
+    }
+
+    throw new UnauthorizedException();
   }
 
   me() {

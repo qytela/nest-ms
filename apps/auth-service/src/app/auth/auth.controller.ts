@@ -1,17 +1,17 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @MessagePattern('auth_login')
-  login() {
-    return this.authService.login();
+  @MessagePattern('auth.login')
+  login(@Payload() payload) {
+    return this.authService.login(payload);
   }
 
-  @MessagePattern('auth_me')
+  @MessagePattern('auth.me')
   me() {
     return this.authService.me();
   }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { uuid } from 'uuidv4';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
@@ -12,10 +13,10 @@ import { AuthService } from './auth.service';
         options: {
           client: {
             clientId: 'auth',
-            brokers: ['localhost:9092', 'localhost:9093', 'localhost:9094'],
+            brokers: () => (process.env.KAFKA_BROKERS as string).split(','),
           },
           consumer: {
-            groupId: 'auth-consumer',
+            groupId: 'auth-consumer-' + uuid(),
           },
         },
       },

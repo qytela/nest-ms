@@ -6,7 +6,7 @@ import { LogService } from './log.service';
 export class LogController {
   constructor(private readonly logService: LogService) {}
 
-  @EventPattern('log_save')
+  @EventPattern('log.save')
   save(@Payload() payload) {
     return this.logService.save(payload);
   }

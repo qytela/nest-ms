@@ -2,7 +2,7 @@
 
 ## About this project
 
-This project show how to build microservices with Kafka transport.
+This project show how to build NestJS (monorepo [nx.dev](https://nx.dev/)) microservices with Kafka transport.
 
 The services is:
 
@@ -30,12 +30,27 @@ docker-compose up -d
 
 4. Execute `./run-apps.sh`.
 
+## Test e2e
+
+Testing e2e api-gateway:
+
+```sh
+nx e2e api-gateway-e2e
+```
+
 ## Endpoints
 
 - Api Gateway: http://localhost:3000/api
 - Auth Service:
 
   Login: /auth/login
+
+  ```json
+  {
+    "username": "qytela",
+    "password": "123123"
+  }
+  ```
 
 - Movie Service:
 

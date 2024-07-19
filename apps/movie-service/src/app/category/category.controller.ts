@@ -6,7 +6,7 @@ import { CategoryService } from './category.service';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @MessagePattern('category_findAll')
+  @MessagePattern('movie.category.findAll')
   findAll() {
     return this.categoryService.findAll();
   }

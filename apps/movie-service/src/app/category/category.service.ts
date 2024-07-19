@@ -1,5 +1,6 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { ClientKafkaHelper } from 'shared/utils/client-kafka-helper';
 
 import type { IAuthMe } from 'shared/interfaces/Auth';
 
@@ -12,7 +13,7 @@ export class CategoryService implements OnModuleInit {
 
   async findAll() {
     this.logClient.emit(
-      'log_save',
+      'log.save',
       JSON.stringify({
         fromService: 'category-service',
         service: 'findAll',
@@ -20,7 +21,8 @@ export class CategoryService implements OnModuleInit {
       })
     );
 
-    const user = await this.getUser();
+    const client = new ClientKafkaHelper({ client: this.authClient });
+    const user = await client.sendMessage<IAuthMe>('auth.me');
 
     return {
       user: user,
@@ -44,15 +46,8 @@ export class CategoryService implements OnModuleInit {
     };
   }
 
-  private getUser() {
-    return new Promise((resolve) => {
-      this.authClient
-        .send('auth_me', JSON.stringify({}))
-        .subscribe((user: IAuthMe) => resolve(user));
-    });
-  }
-
-  onModuleInit() {
-    this.authClient.subscribeToResponseOf('auth_me');
+  async onModuleInit() {
+    this.authClient.subscribeToResponseOf('auth.me');
+    await this.authClient.connect();
   }
 }

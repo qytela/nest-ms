@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { uuid } from 'uuidv4';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
 
@@ -12,10 +13,10 @@ import { CategoryService } from './category.service';
         options: {
           client: {
             clientId: 'auth',
-            brokers: ['localhost:9092', 'localhost:9093', 'localhost:9094'],
+            brokers: () => (process.env.KAFKA_BROKERS as string).split(','),
           },
           consumer: {
-            groupId: 'auth-consumer',
+            groupId: 'auth-consumer-' + uuid(),
           },
         },
       },
@@ -25,10 +26,10 @@ import { CategoryService } from './category.service';
         options: {
           client: {
             clientId: 'log',
-            brokers: ['localhost:9092', 'localhost:9093', 'localhost:9094'],
+            brokers: () => (process.env.KAFKA_BROKERS as string).split(','),
           },
           consumer: {
-            groupId: 'log-consumer',
+            groupId: 'log-consumer-' + uuid(),
           },
         },
       },
