@@ -8,8 +8,11 @@ import type { IAuthMe } from 'shared/interfaces/Auth';
 export class CategoryService implements OnModuleInit {
   constructor(
     @Inject('AUTH_SERVICE') private readonly authClient: ClientKafka,
-    @Inject('LOG_SERVICE') private readonly logClient: ClientKafka
-  ) {}
+    @Inject('LOG_SERVICE') private readonly logClient: ClientKafka,
+    private client: ClientKafkaHelper
+  ) {
+    this.client = new ClientKafkaHelper({ client: this.authClient });
+  }
 
   async findAll() {
     this.logClient.emit(
@@ -21,8 +24,7 @@ export class CategoryService implements OnModuleInit {
       })
     );
 
-    const client = new ClientKafkaHelper({ client: this.authClient });
-    const user = await client.sendMessage<IAuthMe>('auth.me');
+    const user = await this.client.sendMessage<IAuthMe>('auth.me');
 
     return {
       user: user,

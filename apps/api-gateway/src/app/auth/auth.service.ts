@@ -6,11 +6,15 @@ import type { IAuthLogin } from 'shared/interfaces/Auth';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
-  constructor(@Inject('AUTH_SERVICE') private readonly authClient: ClientKafka) {}
+  constructor(
+    @Inject('AUTH_SERVICE') private readonly authClient: ClientKafka,
+    private client: ClientKafkaHelper
+  ) {
+    this.client = new ClientKafkaHelper({ client: this.authClient });
+  }
 
   async login({ username, password }) {
-    const client = new ClientKafkaHelper({ client: this.authClient });
-    const user = await client.sendMessage<IAuthLogin>(
+    const user = await this.client.sendMessage<IAuthLogin>(
       'auth.login',
       JSON.stringify({ username, password })
     );
