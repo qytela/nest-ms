@@ -7,7 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './movie/category/category.module';
 
 @Module({
-  imports: [AuthModule, CategoryModule, ConfigModule.forRoot()],
+  imports: [ConfigModule.forRoot(), AuthModule, CategoryModule],
   controllers: [AppController],
   providers: [AppService],
 })
