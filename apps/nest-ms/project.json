@@ -1,0 +1,24 @@
+{
+  "name": "nest-ms",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/nest-ms/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "nest-ms:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "nest-ms:build:development"
+        },
+        "production": {
+          "buildTarget": "nest-ms:build:production"
+        }
+      }
+    }
+  }
+}
