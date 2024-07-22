@@ -6,10 +6,9 @@ import type { IMovieCategory } from 'shared/interfaces/Movie';
 
 @Injectable()
 export class CategoryService implements OnModuleInit {
-  constructor(
-    @Inject('MOVIE_SERVICE') private readonly movieClient: ClientKafka,
-    private client: ClientKafkaHelper
-  ) {
+  private client: ClientKafkaHelper;
+
+  constructor(@Inject('MOVIE_SERVICE') private readonly movieClient: ClientKafka) {
     this.client = new ClientKafkaHelper({ client: this.movieClient });
   }
 

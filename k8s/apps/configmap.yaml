@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apps-configmap
+data:
+  KAFKA_ANONYMOUS: "false"
+  KAFKA_BROKERS: "kafka.kafka.svc.cluster.local:9092"
+  KAFKA_USERNAME: "user1"
+  KAFKA_PASSWORD: "mQgRacGdio"

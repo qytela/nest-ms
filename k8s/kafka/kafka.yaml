@@ -1,0 +1,8 @@
+volumePermissions:
+  enabled: true
+
+persistence:
+  enabled: true
+
+logPersistence:
+  enabled: true

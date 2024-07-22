@@ -1,0 +1,5 @@
+{
+  "yaml.schemas": {
+    "kubernetes://schema/apps/v1%40statefulset": "file:///home/qytela/projects/nest/nest-ms/k8s/kafka/service.yaml"
+  }
+}

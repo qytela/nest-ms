@@ -6,10 +6,11 @@ import type { IAuthMe } from 'shared/interfaces/Auth';
 
 @Injectable()
 export class CategoryService implements OnModuleInit {
+  private client: ClientKafkaHelper;
+
   constructor(
     @Inject('AUTH_SERVICE') private readonly authClient: ClientKafka,
-    @Inject('LOG_SERVICE') private readonly logClient: ClientKafka,
-    private client: ClientKafkaHelper
+    @Inject('LOG_SERVICE') private readonly logClient: ClientKafka
   ) {
     this.client = new ClientKafkaHelper({ client: this.authClient });
   }

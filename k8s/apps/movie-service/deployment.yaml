@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movie-service
+  template:
+    metadata:
+      labels:
+        app: movie-service
+    spec:
+      containers:
+      - name: movie-service
+        image: qytela/movie-service:dev-0.1
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        envFrom:
+        - configMapRef:
+            name: apps-configmap

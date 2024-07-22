@@ -25,7 +25,7 @@ services:
       - KAFKA_BROKER_ID=1
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_LISTENERS=INTERNAL://:29092,EXTERNAL://:9092
-      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka:29092,EXTERNAL://kafka:9092
       - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=3
@@ -45,7 +45,7 @@ services:
       - KAFKA_BROKER_ID=2
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_LISTENERS=INTERNAL://:29093,EXTERNAL://:9093
-      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka-2:29093,EXTERNAL://localhost:9093
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka-2:29093,EXTERNAL://kafka-2:9093
       - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=3
@@ -65,7 +65,7 @@ services:
       - KAFKA_BROKER_ID=3
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_LISTENERS=INTERNAL://:29094,EXTERNAL://:9094
-      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka-3:29094,EXTERNAL://localhost:9094
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka-3:29094,EXTERNAL://kafka-3:9094
       - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=3
@@ -78,6 +78,64 @@ services:
       - kafka-data-3:/bitnami
     depends_on:
       - zookeeper
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway.dockerfile
+    environment:
+      - KAFKA_ANONYMOUS=false
+      - KAFKA_BROKERS=kafka.kafka.svc.cluster.local:9092
+      - KAFKA_USERNAME=user1
+      - KAFKA_PASSWORD=kZbbm7TUBk
+    ports:
+      - 3000:3000
+    depends_on:
+      - kafka
+      - kafka-2
+      - kafka-3
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth-service.dockerfile
+    environment:
+      - KAFKA_ANONYMOUS=false
+      - KAFKA_BROKERS=kafka.kafka.svc.cluster.local:9092
+      - KAFKA_USERNAME=user1
+      - KAFKA_PASSWORD=kZbbm7TUBk
+    depends_on:
+      - kafka
+      - kafka-2
+      - kafka-3
+
+  movie-service:
+    build:
+      context: .
+      dockerfile: movie-service.dockerfile
+    environment:
+      - KAFKA_ANONYMOUS=false
+      - KAFKA_BROKERS=kafka.kafka.svc.cluster.local:9092
+      - KAFKA_USERNAME=user1
+      - KAFKA_PASSWORD=kZbbm7TUBk
+    depends_on:
+      - kafka
+      - kafka-2
+      - kafka-3
+
+  log-service:
+    build:
+      context: .
+      dockerfile: log-service.dockerfile
+    environment:
+      - KAFKA_ANONYMOUS=false
+      - KAFKA_BROKERS=kafka.kafka.svc.cluster.local:9092
+      - KAFKA_USERNAME=user1
+      - KAFKA_PASSWORD=kZbbm7TUBk
+    depends_on:
+      - kafka
+      - kafka-2
+      - kafka-3
 
 volumes:
   zookeeper-data:
