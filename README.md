@@ -28,7 +28,7 @@ The services is:
 docker-compose up -d
 ```
 
-4. Execute `./run-apps.sh`.
+4. Rebuild services `./run-apps.sh`.
 
 ## Test e2e
 
