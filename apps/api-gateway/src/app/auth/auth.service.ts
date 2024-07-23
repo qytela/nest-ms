@@ -12,13 +12,13 @@ export class AuthService implements OnModuleInit {
     this.client = new ClientKafkaHelper({ client: this.authClient });
   }
 
-  async login({ username, password }) {
+  async login({ username, password }): Promise<IAuthLogin> {
     const user = await this.client.sendMessage<IAuthLogin>(
       'auth.login',
       JSON.stringify({ username, password })
     );
 
-    if ((user as IAuthLogin)?.userId) return user;
+    if (user?.userId) return user;
 
     throw new UnauthorizedException();
   }

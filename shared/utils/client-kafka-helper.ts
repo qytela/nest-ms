@@ -18,7 +18,7 @@ export class ClientKafkaHelper {
     this.timeout = options.timeout ?? 30000;
   }
 
-  async sendMessage<T = any>(pattern: any, data?: any): Promise<T | InternalServerErrorException> {
+  async sendMessage<T = any>(pattern: any, data?: any): Promise<T> {
     try {
       return await firstValueFrom(
         this.client.send(pattern, data ?? JSON.stringify({})).pipe(timeout(this.timeout))

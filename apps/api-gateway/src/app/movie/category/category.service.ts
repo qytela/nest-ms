@@ -12,7 +12,7 @@ export class CategoryService implements OnModuleInit {
     this.client = new ClientKafkaHelper({ client: this.movieClient });
   }
 
-  async findAll() {
+  async findAll(): Promise<IMovieCategory> {
     return await this.client.sendMessage<IMovieCategory>('movie.category.findAll');
   }
 

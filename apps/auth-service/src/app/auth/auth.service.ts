@@ -1,8 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
+import type { IAuthLogin, IAuthMe } from 'shared/interfaces/Auth';
+
 @Injectable()
 export class AuthService {
-  login(message: { username: string; password: string }) {
+  login(message: { username: string; password: string }): IAuthLogin {
     if (message.username === 'qytela' && message.password === '123123') {
       return {
         userId: 1,
@@ -14,7 +16,7 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  me() {
+  me(): IAuthMe {
     return {
       userId: 1,
       name: 'Fansa',

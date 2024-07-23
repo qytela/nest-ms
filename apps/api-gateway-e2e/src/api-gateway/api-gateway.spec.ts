@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import type { IAuthMe } from 'shared/interfaces/Auth';
-import type { ICategory } from 'shared/interfaces/Movie';
+import type { IAuthLogin, IAuthMe } from 'shared/interfaces/Auth';
+import type { IMovieCategory, ICategory } from 'shared/interfaces/Movie';
 
 describe('GET /api', () => {
   it('should return a message', async () => {
@@ -21,7 +21,7 @@ describe('/api/auth', () => {
 
     expect(res.status).toBe(201);
     expect(res.data).toEqual(
-      expect.objectContaining({
+      expect.objectContaining(<IAuthLogin>{
         userId: expect.any(Number),
         token: expect.any(String),
         roles: expect.any(Array),
@@ -46,7 +46,7 @@ describe('/api/movie', () => {
 
     expect(res.status).toBe(200);
     expect(res.data).toEqual(
-      expect.objectContaining({
+      expect.objectContaining(<IMovieCategory>{
         user: expect.objectContaining<IAuthMe>({
           userId: expect.any(Number),
           name: expect.any(String),

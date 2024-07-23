@@ -3,6 +3,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import { ClientKafkaHelper } from 'shared/utils/client-kafka-helper';
 
 import type { IAuthMe } from 'shared/interfaces/Auth';
+import type { IMovieCategory } from 'shared/interfaces/Movie';
 
 @Injectable()
 export class CategoryService implements OnModuleInit {
@@ -15,7 +16,7 @@ export class CategoryService implements OnModuleInit {
     this.client = new ClientKafkaHelper({ client: this.authClient });
   }
 
-  async findAll() {
+  async findAll(): Promise<IMovieCategory> {
     this.logClient.emit(
       'log.save',
       JSON.stringify({
