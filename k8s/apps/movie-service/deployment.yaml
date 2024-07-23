@@ -23,3 +23,5 @@ spec:
         envFrom:
         - configMapRef:
             name: apps-configmap
+      nodeSelector:
+        role: worker
