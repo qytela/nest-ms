@@ -21,15 +21,13 @@ export class AuthService implements OnModuleInit {
 
     const user = await this.client.sendMessage<IAuthLogin>(
       'auth.login',
-      JSON.stringify({ username, password })
+      JSON.stringify({ username, password }),
+      timer
     );
 
-    if (user?.userId) {
-      timer.success();
-      return user;
-    }
+    timer.success();
 
-    timer.fail();
+    if (user?.userId) return user;
 
     throw new UnauthorizedException();
   }
