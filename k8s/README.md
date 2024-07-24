@@ -22,21 +22,13 @@ commit: 8220a6eb95f0a4d75f7f2d7b14cef975f050512d
 minikube start --nodes 3 --base-image gcr.io/k8s-minikube/kicbase-builds:v0.0.42-1703092832-17830
 ```
 
-2. Set node(s) label to worker.
+2. Set node(s) to worker.
 
 ```sh
-kubectl label node minikube-m02 node-role.kubernetes.io/worker=worker
-kubectl label node minikube-m03 node-role.kubernetes.io/worker=worker
+./k8s/set-workers.sh
 ```
 
-3. Set node(s) role to worker.
-
-```sh
-kubectl label nodes minikube-m02 role=worker
-kubectl label nodes minikube-m03 role=worker
-```
-
-4. Build docker image on minikube instance for each apps.
+3. Build docker image on minikube instance for each apps.
 
 ```sh
 minikube image build -f api-gateway.dockerfile . -t {username}/api-gateway:dev-0.1
@@ -48,7 +40,7 @@ minikube image build -f movie-service.dockerfile . -t {username}/movie-service:d
 minikube image build -f log-service.dockerfile . -t {username}/log-service:dev-0.1
 ```
 
-5. Change the {username} with your docker username and inside `k8s/apps/{app}/deployment.yaml` too.
+4. Change the {username} with your docker username and inside `k8s/apps/{app}/deployment.yaml` too.
 
 ### Kafka Installation
 
@@ -58,7 +50,7 @@ minikube image build -f log-service.dockerfile . -t {username}/log-service:dev-0
 kubectl create namespace kafka
 ```
 
-2. Install kafka with helm.
+2. Install kafka using helm.
 
 ```sh
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -66,7 +58,7 @@ helm repo update
 helm install kafka bitnami/kafka -n kafka -f k8s/kafka/kafka.yaml
 ```
 
-> process may take up 5-10 minutes to complete kafka cluster.
+> process may takes up 5-10 minutes to complete kafka cluster.
 
 ### Service Deployment
 

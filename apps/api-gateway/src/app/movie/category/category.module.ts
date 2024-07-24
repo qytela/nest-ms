@@ -1,8 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ClientKafkaOpts } from 'shared/utils/client-kafka-opts';
+import {
+  makeHttpReqTotal,
+  makeHttpReqFailTotal,
+  makeHttpReqTimeSeconds,
+  makeDBResTimeSeconds,
+} from 'shared/utils/prom-client/makeMetricsProvider';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
+import { PromService } from '../../prom.service';
 
 @Module({
   imports: [
@@ -15,6 +22,13 @@ import { CategoryService } from './category.service';
     ]),
   ],
   controllers: [CategoryController],
-  providers: [CategoryService],
+  providers: [
+    CategoryService,
+    PromService,
+    makeHttpReqTotal(),
+    makeHttpReqFailTotal(),
+    makeHttpReqTimeSeconds(),
+    makeDBResTimeSeconds(),
+  ],
 })
 export class CategoryModule {}

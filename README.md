@@ -40,7 +40,7 @@ nx e2e api-gateway-e2e
 
 ## Endpoints
 
-- Api Gateway: http://localhost:3000/api
+- Api Gateway: http://localhost:8080/api
 - Auth Service:
 
   Login: /auth/login

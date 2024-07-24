@@ -1,8 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ClientKafkaOpts } from 'shared/utils/client-kafka-opts';
+import {
+  makeHttpReqTotal,
+  makeHttpReqFailTotal,
+  makeHttpReqTimeSeconds,
+  makeDBResTimeSeconds,
+} from 'shared/utils/prom-client/makeMetricsProvider';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { PromService } from '../prom.service';
 
 @Module({
   imports: [
@@ -15,6 +22,13 @@ import { AuthService } from './auth.service';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    PromService,
+    makeHttpReqTotal(),
+    makeHttpReqFailTotal(),
+    makeHttpReqTimeSeconds(),
+    makeDBResTimeSeconds(),
+  ],
 })
 export class AuthModule {}

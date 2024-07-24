@@ -1,6 +1,7 @@
 import { Inject, Injectable, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ClientKafkaHelper } from 'shared/utils/client-kafka-helper';
+import { PromService } from '../prom.service';
 
 import type { IAuthLogin } from 'shared/interfaces/Auth';
 
@@ -8,17 +9,27 @@ import type { IAuthLogin } from 'shared/interfaces/Auth';
 export class AuthService implements OnModuleInit {
   private client: ClientKafkaHelper;
 
-  constructor(@Inject('AUTH_SERVICE') private readonly authClient: ClientKafka) {
+  constructor(
+    @Inject('AUTH_SERVICE') private readonly authClient: ClientKafka,
+    private readonly promService: PromService
+  ) {
     this.client = new ClientKafkaHelper({ client: this.authClient });
   }
 
-  async login({ username, password }): Promise<IAuthLogin> {
+  async login({ username, password }, req: Request): Promise<IAuthLogin> {
+    const timer = this.promService.startHttpTimer(req, { operation: 'auth.service-login' });
+
     const user = await this.client.sendMessage<IAuthLogin>(
       'auth.login',
       JSON.stringify({ username, password })
     );
 
-    if (user?.userId) return user;
+    if (user?.userId) {
+      timer.success();
+      return user;
+    }
+
+    timer.fail();
 
     throw new UnauthorizedException();
   }

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 
 import { AppService } from './app.service';
 
@@ -7,7 +7,12 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getData() {
-    return this.appService.getData();
+  getData(@Req() req) {
+    return this.appService.getData(req);
+  }
+
+  @Get('test-fail')
+  testFail(@Req() req) {
+    return this.appService.testFail(req);
   }
 }

@@ -84,10 +84,11 @@ services:
       context: .
       dockerfile: api-gateway.dockerfile
     environment:
+      - PORT=8080
       - KAFKA_ANONYMOUS=true
       - KAFKA_BROKERS=kafka:9092,kafka-2:9093,kafka-3:9094
     ports:
-      - 3000:3000
+      - 8080:8080
     depends_on:
       - kafka
       - kafka-2
