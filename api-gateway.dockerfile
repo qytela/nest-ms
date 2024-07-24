@@ -2,7 +2,7 @@
 FROM node:16.20.2 AS builder
 
 ENV HOST=0.0.0.0
-ENV PORT=3000
+ENV PORT=8080
 
 WORKDIR /app
 RUN npm install -g nx

@@ -2,8 +2,8 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom, timeout } from 'rxjs';
 
-import type { IPromService } from 'apps/api-gateway/src/interfaces/prom.service.interface';
 import type { IClientKafkaError } from '../interfaces/Kafka';
+import type { IPromService } from '../interfaces/PromService';
 
 interface IOptions {
   client: ClientKafka;

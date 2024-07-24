@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 
 import type { Counter, Histogram } from 'prom-client';
-import type { IPromService, IStartHTTPTimerOptions } from '../interfaces/prom.service.interface';
+import type { IPromService, IStartHTTPTimerOptions } from 'shared/interfaces/PromService';
 
 @Injectable()
 export class PromService {
