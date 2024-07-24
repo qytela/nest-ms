@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit, UnprocessableEntityException } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ClientKafkaHelper } from 'shared/utils/client-kafka-helper';
 import { PromService } from '../../prom.service';
@@ -18,9 +18,18 @@ export class CategoryService implements OnModuleInit {
 
   async findAll(req: Request): Promise<IMovieCategory> {
     const timer = this.promService.startHttpTimer(req, { operation: 'category.service-findAll' });
-    timer.success();
 
-    return await this.client.sendMessage<IMovieCategory>('movie.category.findAll');
+    const categories = await this.client.sendMessage<IMovieCategory>(
+      'movie.category.findAll',
+      undefined,
+      timer
+    );
+    if (categories?.categories) {
+      timer.success();
+      return categories;
+    }
+
+    throw new UnprocessableEntityException();
   }
 
   async onModuleInit() {

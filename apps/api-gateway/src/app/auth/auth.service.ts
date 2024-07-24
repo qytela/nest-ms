@@ -24,10 +24,10 @@ export class AuthService implements OnModuleInit {
       JSON.stringify({ username, password }),
       timer
     );
-
-    timer.success();
-
-    if (user?.userId) return user;
+    if (user?.userId) {
+      timer.success();
+      return user;
+    }
 
     throw new UnauthorizedException();
   }
