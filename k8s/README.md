@@ -94,4 +94,4 @@ minikube tunnel
 
 ## Flowchart
 
-[![Microservices-Logic.jpg](https://i.postimg.cc/k4VPKXc2/Microservices-Logic.jpg)](https://postimg.cc/vgdKdyCy)
+[![Microservices-Logic](https://i.postimg.cc/k4VPKXc2/Microservices-Logic.jpg)](https://postimg.cc/vgdKdyCy)

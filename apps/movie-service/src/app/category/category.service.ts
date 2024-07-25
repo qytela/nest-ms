@@ -20,7 +20,7 @@ export class CategoryService implements OnModuleInit {
     this.logClient.emit(
       'log.save',
       JSON.stringify({
-        fromService: 'category-service',
+        fromService: 'category.service',
         service: 'findAll',
         timestamps: new Date(),
       })

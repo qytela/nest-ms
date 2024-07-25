@@ -28,7 +28,7 @@ The services is:
 docker-compose up -d
 ```
 
-4. Rebuild services `./run-apps.sh`.
+4. Rebuild services `./docker-run-apps.sh`.
 
 ## Test e2e
 
@@ -53,5 +53,5 @@ nx e2e api-gateway-e2e
   ```
 
 - Movie Service:
-
+  Movies: /movie
   Categories: /movie/category

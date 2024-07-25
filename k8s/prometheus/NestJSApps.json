@@ -41,19 +41,36 @@
               },
               {
                 "color": "orange",
-                "value": 80
+                "value": 70
               },
               {
                 "color": "red",
-                "value": 100
+                "value": 90
               }
             ]
-          }
+          },
+          "unit": "percent"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "sum(rate(container_cpu_usage_seconds_total{namespace=\"default\"}[5m])) * 100"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": []
+          }
+        ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 7,
         "w": 12,
         "x": 0,
         "y": 0
@@ -82,14 +99,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (pod) (container_memory_usage_bytes{namespace=\"default\"}) / (1024 * 1024)",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"default\"}[5m])) * 100",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Pods Memory Usage (MB)",
+      "title": "Memory Usage (avg 5m)",
       "type": "gauge"
     },
     {
@@ -112,19 +129,20 @@
               },
               {
                 "color": "orange",
-                "value": 250
+                "value": 70
               },
               {
                 "color": "red",
-                "value": 400
+                "value": 90
               }
             ]
-          }
+          },
+          "unit": "percent"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
+        "h": 7,
         "w": 12,
         "x": 12,
         "y": 0
@@ -143,7 +161,8 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "sizing": "auto"
+        "sizing": "auto",
+        "text": {}
       },
       "pluginVersion": "11.1.0",
       "targets": [
@@ -153,15 +172,277 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"default\"}[5m])) * 1000",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"default\"}[5m])) * 100",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Pods CPU Usage (Mi)",
+      "title": "CPU Usage (avg 5m)",
       "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 7
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(kube_pod_container_resource_limits{namespace=\"default\",resource=\"memory\"}) / (1024 * 1024)",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Memory Usage",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 7
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(kube_pod_container_resource_requests{resource=\"memory\"}) / (1024 * 1024)",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Memory",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 7
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(kube_pod_container_resource_limits{namespace=\"default\",resource=\"cpu\"}) * 100",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total CPU Usage (Mi)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 7
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(kube_pod_container_resource_requests{resource=\"cpu\"}) * 100",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total CPU (Mi)",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -198,12 +479,12 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 11
+        "y": 13
       },
       "id": 8,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -271,12 +552,12 @@
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 11
+        "y": 13
       },
       "id": 6,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -344,12 +625,12 @@
         "h": 6,
         "w": 6,
         "x": 12,
-        "y": 11
+        "y": 13
       },
       "id": 9,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -417,12 +698,12 @@
         "h": 6,
         "w": 6,
         "x": 18,
-        "y": 11
+        "y": 13
       },
       "id": 7,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -482,12 +763,12 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 19
       },
       "id": 4,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -551,12 +832,12 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 19
       },
       "id": 1,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -640,7 +921,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -686,7 +968,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 25
+        "y": 27
       },
       "id": 3,
       "options": {
@@ -770,7 +1052,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -785,7 +1068,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 25
+        "y": 27
       },
       "id": 2,
       "options": {
@@ -868,7 +1151,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -899,7 +1183,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 35
       },
       "id": 10,
       "options": {
@@ -936,19 +1220,20 @@
       "type": "timeseries"
     }
   ],
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "NestJS Apps",
   "uid": "fdsoniyxji4u8b",
-  "version": 28,
+  "version": 43,
   "weekStart": ""
 }

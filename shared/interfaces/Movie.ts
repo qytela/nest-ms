@@ -1,5 +1,12 @@
 import type { IAuthMe } from './Auth';
 
+export interface IMovie {
+  id: number;
+  title: string;
+  author: string;
+  duration: number;
+}
+
 export interface IMovieCategory {
   user: IAuthMe;
   categories: ICategory[];

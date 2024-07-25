@@ -7,10 +7,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PromService } from './prom.service';
 import { AuthModule } from './auth/auth.module';
+import { MovieModule } from './movie/movie.module';
 import { CategoryModule } from './movie/category/category.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), PrometheusModule.register(), AuthModule, CategoryModule],
+  imports: [
+    ConfigModule.forRoot(),
+    PrometheusModule.register(),
+    AuthModule,
+    MovieModule,
+    CategoryModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PromService, ...MakeMetricsProvider()],
 })
