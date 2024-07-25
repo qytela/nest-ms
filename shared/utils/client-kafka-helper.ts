@@ -1,8 +1,7 @@
-import { InternalServerErrorException } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom, timeout } from 'rxjs';
+import { ClientKafkaSendMessageException } from '../exceptions/ClientKafkaSendMessageException';
 
-import type { IClientKafkaError } from '../interfaces/Kafka';
 import type { IPromService } from '../interfaces/PromService';
 
 interface IOptions {
@@ -28,12 +27,7 @@ export class ClientKafkaHelper {
       if (timer) timer.fail();
 
       if (error instanceof Error) {
-        throw new InternalServerErrorException(<IClientKafkaError>{
-          status: false,
-          message: 'Error',
-          pattern: pattern,
-          exception: error.message,
-        });
+        throw new ClientKafkaSendMessageException(pattern);
       }
 
       return error;
