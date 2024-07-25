@@ -9,7 +9,8 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "auth-service:build"
+        "buildTarget": "auth-service:build",
+        "inspect": false
       },
       "configurations": {
         "development": {

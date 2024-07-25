@@ -9,7 +9,8 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "log-service:build"
+        "buildTarget": "log-service:build",
+        "inspect": false
       },
       "configurations": {
         "development": {
