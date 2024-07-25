@@ -1,12 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
-import {
-  makeHttpReqTotal,
-  makeHttpReqFailTotal,
-  makeHttpReqTimeSeconds,
-  makeDBResTimeSeconds,
-} from 'shared/utils/prom-client/makeMetricsProvider';
+import { MakeMetricsProvider } from 'shared/utils/prom-client/MakeMetricsProvider';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -17,13 +12,6 @@ import { CategoryModule } from './movie/category/category.module';
 @Module({
   imports: [ConfigModule.forRoot(), PrometheusModule.register(), AuthModule, CategoryModule],
   controllers: [AppController],
-  providers: [
-    AppService,
-    PromService,
-    makeHttpReqTotal(),
-    makeHttpReqFailTotal(),
-    makeHttpReqTimeSeconds(),
-    makeDBResTimeSeconds(),
-  ],
+  providers: [AppService, PromService, ...MakeMetricsProvider()],
 })
 export class AppModule {}
