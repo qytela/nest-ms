@@ -27,10 +27,10 @@ export class ClientKafkaHelper {
       if (timer) timer.fail();
 
       if (error instanceof Error) {
-        throw new ClientKafkaSendMessageException(pattern);
+        throw new ClientKafkaSendMessageException(pattern, error);
       }
 
-      return error;
+      throw new ClientKafkaSendMessageException(pattern);
     }
   }
 }
