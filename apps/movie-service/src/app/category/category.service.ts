@@ -2,6 +2,8 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ClientKafkaHelper } from 'shared/utils/client-kafka-helper';
 
+import { AuthMeMock } from 'mocks/user-mock';
+
 import type { IAuthMe } from 'shared/interfaces/Auth';
 import type { IMovieCategory } from 'shared/interfaces/Movie';
 
@@ -26,7 +28,10 @@ export class CategoryService implements OnModuleInit {
       })
     );
 
-    const user = await this.client.sendMessage<IAuthMe>('auth.me');
+    let user = AuthMeMock;
+    if (process.env.NODE_ENV !== 'test') {
+      user = await this.client.sendMessage<IAuthMe>('auth.me');
+    }
 
     return {
       user: user,

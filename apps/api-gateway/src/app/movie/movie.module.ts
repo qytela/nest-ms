@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ClientKafkaOpts } from 'shared/utils/client-kafka-opts';
-import { MakeMetricsProvider } from 'shared/utils/prom-client/MakeMetricsProvider';
 import { MovieController } from './movie.controller';
 import { MovieService } from './movie.service';
-import { PromService } from '../prom.service';
+import { PromModule } from '../prom/prom.module';
 
 @Module({
   imports: [
@@ -15,8 +14,9 @@ import { PromService } from '../prom.service';
         options: new ClientKafkaOpts({ clientId: 'movie', groupId: 'movie-consumer' }).getOptions(),
       },
     ]),
+    PromModule,
   ],
   controllers: [MovieController],
-  providers: [MovieService, PromService, ...MakeMetricsProvider()],
+  providers: [MovieService],
 })
 export class MovieModule {}

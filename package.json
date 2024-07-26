@@ -20,6 +20,7 @@
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
+    "@golevelup/ts-jest": "^0.5.0",
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.2",
     "@nx/eslint": "19.5.1",

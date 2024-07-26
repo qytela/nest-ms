@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnModuleInit, UnprocessableEntityException } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ClientKafkaHelper } from 'shared/utils/client-kafka-helper';
-import { PromService } from '../prom.service';
+import { PromService } from '../prom/prom.service';
 
 import type { IMovie } from 'shared/interfaces/Movie';
 
