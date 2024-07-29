@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
 import { CqrsModule, CommandBus, QueryBus } from '@nestjs/cqrs';
-import { createMock } from '@golevelup/ts-jest';
 
 import { AuthService } from './auth.service';
 import { GetUserLoginQuery } from './queries/impl/get-user-login.query';
@@ -50,7 +49,7 @@ describe('AuthService', () => {
         roles: ['user'],
       }
 
-      (queryBus.execute as jest.Mock).mockResolvedValue(mockRes as never);
+      (queryBus.execute as jest.Mock).mockResolvedValue(mockRes);
       const result = await service.login(mockBody);
 
       expect(result).toEqual(
