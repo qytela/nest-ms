@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UserRegisterCommand } from './commands/impl/user-register.command';
+import { GetUserLoginQuery } from './queries/impl/get-user-login.query';
 
 import type { IAuthLogin, IAuthRegister, IAuthMe } from 'shared/interfaces/Auth';
-import { GetUserLoginQuery } from './queries/impl/get-user-login.query';
 
 @Injectable()
 export class AuthService {
