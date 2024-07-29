@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 
 import { AuthService } from './auth.service';
+import { CommandHandlers } from './commands/handlers';
+import { EventHandlers } from './events/handlers';
+import { QueryHandlers } from './queries/handlers';
 
 import type { IAuthLogin, IAuthMe } from 'shared/interfaces/Auth';
 
@@ -12,7 +16,8 @@ describe('AuthService', () => {
     process.env.NODE_ENV = 'test';
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService],
+      imports: [CqrsModule],
+      providers: [AuthService, ...CommandHandlers, ...EventHandlers, ...QueryHandlers],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
