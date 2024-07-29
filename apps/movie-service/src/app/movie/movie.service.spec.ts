@@ -10,6 +10,8 @@ describe('MovieService', () => {
   let service: MovieService;
 
   beforeAll(async () => {
+    process.env.NODE_ENV = 'test';
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MovieService,

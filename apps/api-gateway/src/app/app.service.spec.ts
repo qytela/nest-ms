@@ -7,6 +7,8 @@ describe('AppService', () => {
   let service: AppService;
 
   beforeAll(async () => {
+    process.env.NODE_ENV = 'test';
+
     const module: TestingModule = await Test.createTestingModule({
       imports: [PromModule],
       providers: [AppService],

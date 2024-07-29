@@ -40,6 +40,7 @@ describe('AuthService', () => {
         username: 'qytela',
         password: 'xxx',
       };
+
       try {
         await service.login(mockBody);
       } catch (error) {

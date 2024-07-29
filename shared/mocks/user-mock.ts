@@ -1,4 +1,4 @@
-import { IAuthMe } from '../shared/interfaces/Auth';
+import { IAuthMe } from '../interfaces/Auth';
 
 export const AuthMeMock: IAuthMe = {
   userId: 1,

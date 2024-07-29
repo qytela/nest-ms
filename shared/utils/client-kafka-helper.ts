@@ -2,7 +2,10 @@ import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom, timeout } from 'rxjs';
 import { ClientKafkaSendMessageException } from '../exceptions/ClientKafkaSendMessageException';
 
+import { AuthMeMock } from '../mocks/user-mock';
+
 import type { IPromService } from '../interfaces/PromService';
+import type { TPatternType } from '../interfaces/PatternType';
 
 interface IOptions {
   client: ClientKafka;
@@ -18,8 +21,11 @@ export class ClientKafkaHelper {
     this.timeout = options.timeout ?? 30000;
   }
 
-  async sendMessage<T = any>(pattern: any, data?: any, timer?: IPromService): Promise<T> {
+  async sendMessage<T = any>(pattern: TPatternType, data?: any, timer?: IPromService): Promise<T> {
     try {
+      const testEnv = this.eligibleTestEnv<T>(pattern);
+      if (testEnv) return testEnv;
+
       return await firstValueFrom(
         this.client.send(pattern, data ?? JSON.stringify({})).pipe(timeout(this.timeout))
       );
@@ -31,6 +37,14 @@ export class ClientKafkaHelper {
       }
 
       throw new ClientKafkaSendMessageException(pattern);
+    }
+  }
+
+  private eligibleTestEnv<T = any>(pattern: TPatternType): T | void {
+    // defined mocks here while run testing
+    if (process.env.NODE_ENV === 'test') {
+      // return mock user
+      if (pattern === 'auth.me') return AuthMeMock as any;
     }
   }
 }
