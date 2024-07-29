@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
+import { CqrsModule, CommandBus, QueryBus } from '@nestjs/cqrs';
+import { createMock } from '@golevelup/ts-jest';
 
 import { AuthService } from './auth.service';
 import { CommandHandlers } from './commands/handlers';
@@ -17,7 +18,20 @@ describe('AuthService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [CqrsModule],
-      providers: [AuthService, ...CommandHandlers, ...EventHandlers, ...QueryHandlers],
+      providers: [
+        AuthService,
+        ...CommandHandlers,
+        ...EventHandlers,
+        ...QueryHandlers,
+        {
+          provide: CommandBus,
+          useValue: createMock<CommandBus>(),
+        },
+        {
+          provide: QueryBus,
+          useValue: createMock<QueryBus>(),
+        },
+      ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
