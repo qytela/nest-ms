@@ -47,7 +47,7 @@ describe('AuthService', () => {
         userId: 1,
         token: 'xxxxxxxxxxxx',
         roles: ['user'],
-      }
+      };
 
       jest.spyOn(queryBus, 'execute').mockResolvedValue(mockRes as never);
       const result = await service.login(mockBody);
