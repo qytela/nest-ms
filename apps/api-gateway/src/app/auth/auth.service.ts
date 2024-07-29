@@ -1,9 +1,15 @@
-import { Inject, Injectable, OnModuleInit, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  OnModuleInit,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ClientKafkaHelper } from 'shared/utils/client-kafka-helper';
 import { PromService } from '../prom/prom.service';
 
-import type { IAuthLogin, IAuthMe } from 'shared/interfaces/Auth';
+import type { IAuthLogin, IAuthRegister, IAuthMe } from 'shared/interfaces/Auth';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -32,6 +38,22 @@ export class AuthService implements OnModuleInit {
     throw new UnauthorizedException();
   }
 
+  async register({ name, username, password }, req: Request) {
+    const timer = this.promService.startHttpTimer(req, { operation: 'auth.service-register' });
+
+    const user = await this.client.sendMessage<IAuthRegister>(
+      'auth.register',
+      JSON.stringify({ name, username, password }),
+      timer
+    );
+    if (user?.name) {
+      timer.success();
+      return user;
+    }
+
+    throw new UnprocessableEntityException();
+  }
+
   async me(req: Request): Promise<IAuthMe> {
     const timer = this.promService.startHttpTimer(req, { operation: 'auth.service-me' });
 
@@ -46,6 +68,7 @@ export class AuthService implements OnModuleInit {
 
   async onModuleInit() {
     this.authClient.subscribeToResponseOf('auth.login');
+    this.authClient.subscribeToResponseOf('auth.register');
     this.authClient.subscribeToResponseOf('auth.me');
     await this.authClient.connect();
   }

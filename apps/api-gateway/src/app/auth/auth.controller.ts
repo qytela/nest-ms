@@ -10,6 +10,11 @@ export class AuthController {
     return this.authService.login(body, req);
   }
 
+  @Post('register')
+  register(@Body() body, @Req() req) {
+    return this.authService.register(body, req);
+  }
+
   @Get('me')
   me(@Req() req) {
     return this.authService.me(req);

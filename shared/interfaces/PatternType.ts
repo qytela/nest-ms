@@ -1,1 +1,6 @@
-export type TPatternType = 'auth.login' | 'auth.me' | 'movie.findAll' | 'movie.category.findAll';
+export type TPatternType =
+  | 'auth.login'
+  | 'auth.register'
+  | 'auth.me'
+  | 'movie.findAll'
+  | 'movie.category.findAll';

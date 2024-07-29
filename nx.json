@@ -36,10 +36,7 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
-      },
-      "exclude": [
-        "apps/api-gateway-e2e/**/*"
-      ]
+      }
     }
   ],
   "defaultProject": "api-gateway"

@@ -11,6 +11,11 @@ export class AuthController {
     return this.authService.login(payload);
   }
 
+  @MessagePattern('auth.register')
+  register(@Payload() payload) {
+    return this.authService.register(payload);
+  }
+
   @MessagePattern('auth.me')
   me() {
     return this.authService.me();

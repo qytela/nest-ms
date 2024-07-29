@@ -1,19 +1,30 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { UserRegisterCommand } from './commands/impl/user-register.command';
 
-import type { IAuthLogin, IAuthMe } from 'shared/interfaces/Auth';
+import type { IAuthLogin, IAuthRegister, IAuthMe } from 'shared/interfaces/Auth';
+import { GetUserLoginQuery } from './queries/impl/get-user-login.query';
 
 @Injectable()
 export class AuthService {
-  login(message: { username: string; password: string }): IAuthLogin {
+  constructor(private readonly cmdBus: CommandBus, private readonly queryBus: QueryBus) {}
+
+  async login(message: { username: string; password: string }): Promise<IAuthLogin> {
     if (message.username === 'qytela' && message.password === '123123') {
-      return {
-        userId: 1,
-        token: 'xxxxxxxxxxxx',
-        roles: ['user'],
-      };
+      return this.queryBus.execute<GetUserLoginQuery, IAuthLogin>(new GetUserLoginQuery(1));
     }
 
     throw new UnauthorizedException();
+  }
+
+  async register(message: {
+    name: string;
+    username: string;
+    password: string;
+  }): Promise<IAuthRegister> {
+    return this.cmdBus.execute<UserRegisterCommand, IAuthRegister>(
+      new UserRegisterCommand(message)
+    );
   }
 
   me(): IAuthMe {

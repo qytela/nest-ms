@@ -1,5 +1,5 @@
 import { ConsumerConfig, KafkaConfig } from 'kafkajs';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 const { KAFKA_ANONYMOUS, KAFKA_BROKERS, KAFKA_USERNAME, KAFKA_PASSWORD } = process.env;
 
@@ -40,7 +40,7 @@ export class ClientKafkaOpts {
 
     if (this.uniqueGroupId) {
       options.consumer = {
-        groupId: `${this.groupId}-${uuid()}`,
+        groupId: `${this.groupId}-${v4()}`,
       };
     } else {
       options.consumer = {
