@@ -22,4 +22,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm i -g nx
+    - run: npm i
     - run: nx run-many -t test -p api-gateway auth-service movie-service log-service --pararel=false
