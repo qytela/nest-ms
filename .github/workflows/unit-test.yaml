@@ -2,7 +2,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -11,16 +11,18 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [16.x]
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Unit Test
+    - name: Unit Test (NodeJS version ${{ matrix.node-version }})
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm i -g nx
-    - run: npm i
-    - run: nx run-many -t test -p api-gateway auth-service movie-service log-service --pararel=false
+    - run: |
+        npm i -g nx
+        npm i
+        chmod +x nx-test.sh
+        ./nx-test.sh
