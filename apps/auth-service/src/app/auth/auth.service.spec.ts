@@ -4,14 +4,13 @@ import { CqrsModule, CommandBus, QueryBus } from '@nestjs/cqrs';
 import { createMock } from '@golevelup/ts-jest';
 
 import { AuthService } from './auth.service';
-import { CommandHandlers } from './commands/handlers';
-import { EventHandlers } from './events/handlers';
-import { QueryHandlers } from './queries/handlers';
+import { GetUserLoginQuery } from './impl/get-user-login.query';
 
 import type { IAuthLogin, IAuthMe } from 'shared/interfaces/Auth';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let queryBus: QueryBus;
 
   beforeAll(async () => {
     process.env.NODE_ENV = 'test';
@@ -20,9 +19,6 @@ describe('AuthService', () => {
       imports: [CqrsModule],
       providers: [
         AuthService,
-        ...CommandHandlers,
-        ...EventHandlers,
-        ...QueryHandlers,
         {
           provide: CommandBus,
           useValue: createMock<CommandBus>(),
@@ -35,6 +31,7 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    queryBus = module.get<QueryBus>(QueryBus);
   });
 
   describe('login', () => {
@@ -43,6 +40,13 @@ describe('AuthService', () => {
         username: 'qytela',
         password: '123123',
       };
+      const mockRes: IAuthLogin = {
+        userId: 1,
+        token: 'xxxxxxxxxxxx',
+        roles: ['user'],
+      }
+
+      jest.spyOn(queryBus, 'execute').mockResolvedValue(mockRes as never);
       const result = await service.login(mockBody);
 
       expect(result).toEqual(
@@ -52,6 +56,7 @@ describe('AuthService', () => {
           roles: expect.any(Array),
         })
       );
+      expect(queryBus.execute).toHaveBeenCalledWith(new GetUserLoginQuery(1));
     });
 
     it('should return a user failed login', async () => {
