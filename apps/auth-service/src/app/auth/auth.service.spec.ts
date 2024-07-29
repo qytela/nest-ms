@@ -4,7 +4,7 @@ import { CqrsModule, CommandBus, QueryBus } from '@nestjs/cqrs';
 import { createMock } from '@golevelup/ts-jest';
 
 import { AuthService } from './auth.service';
-import { GetUserLoginQuery } from './impl/get-user-login.query';
+import { GetUserLoginQuery } from './queries/impl/get-user-login.query';
 
 import type { IAuthLogin, IAuthMe } from 'shared/interfaces/Auth';
 
