@@ -21,11 +21,15 @@ describe('AuthService', () => {
         AuthService,
         {
           provide: CommandBus,
-          useValue: createMock<CommandBus>(),
+          useValue: {
+            execute: jest.fn(),
+          },
         },
         {
           provide: QueryBus,
-          useValue: createMock<QueryBus>(),
+          useValue: {
+            execute: jest.fn(),
+          },
         },
       ],
     }).compile();
@@ -46,7 +50,7 @@ describe('AuthService', () => {
         roles: ['user'],
       }
 
-      jest.spyOn(queryBus, 'execute').mockResolvedValue(mockRes as never);
+      jest.spyOn(queryBus, 'execute').mockResolvedValue(mockRes);
       const result = await service.login(mockBody);
 
       expect(result).toEqual(
