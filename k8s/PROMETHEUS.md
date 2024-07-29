@@ -46,4 +46,4 @@ Dashboard Grafana:
 
 ![Dashboard](images/Dashboard-1.png)
 ![Dashboard](images/Dashboard-2.png)
-![Alt text](images/Dashboard-3.png)
+![Dashboard](images/Dashboard-3.png)

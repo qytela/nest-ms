@@ -30,12 +30,12 @@ docker-compose up -d
 
 4. Rebuild services `./docker-run-apps.sh`.
 
-## Test e2e
+## Test
 
-Testing e2e api-gateway:
+Testing services:
 
 ```sh
-nx e2e api-gateway-e2e
+./nx-test.sh
 ```
 
 ## Endpoints

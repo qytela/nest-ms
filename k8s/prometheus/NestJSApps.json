@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 28,
+  "id": 29,
   "links": [],
   "panels": [
     {
@@ -99,7 +99,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"default\"}[5m])) * 100",
+          "expr": "sum(max_over_time(container_memory_usage_bytes{namespace=\"default\"}[5m])) / sum(kube_pod_container_resource_limits{namespace=\"default\",resource=\"memory\"}) * 10",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -172,7 +172,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"default\"}[5m])) * 100",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"default\"}[5m])) / sum(kube_pod_container_resource_limits{namespace=\"default\",resource=\"cpu\"}) * 10",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -921,8 +921,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1052,8 +1051,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1151,8 +1149,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1234,6 +1231,6 @@
   "timezone": "browser",
   "title": "NestJS Apps",
   "uid": "fdsoniyxji4u8b",
-  "version": 43,
+  "version": 7,
   "weekStart": ""
 }
