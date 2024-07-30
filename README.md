@@ -67,8 +67,21 @@ Testing services:
   }
   ```
 
+  Register: /auth/register
+
+  ```json
+  {
+    "username": "qytela",
+    "password": "123123"
+  }
+  ```
+
+  Me: /auth/me
+
 - Movie Service:
+
   Movies: /movie
+
   Categories: /movie/category
 
 ---
