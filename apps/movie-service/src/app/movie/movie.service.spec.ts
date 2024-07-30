@@ -1,6 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ClientKafka } from '@nestjs/microservices';
-import { createMock } from '@golevelup/ts-jest';
+import { TestBed } from '@automock/jest';
 
 import { MovieService } from './movie.service';
 
@@ -10,19 +8,9 @@ describe('MovieService', () => {
   let service: MovieService;
 
   beforeAll(async () => {
-    process.env.NODE_ENV = 'test';
+    const { unit } = TestBed.create(MovieService).compile();
 
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        MovieService,
-        {
-          provide: 'LOG_SERVICE',
-          useValue: createMock<ClientKafka>(),
-        },
-      ],
-    }).compile();
-
-    service = module.get<MovieService>(MovieService);
+    service = unit;
   });
 
   describe('findAll', () => {

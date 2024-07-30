@@ -1,7 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestBed } from '@automock/jest';
 import { UnauthorizedException } from '@nestjs/common';
-import { CqrsModule, CommandBus, QueryBus } from '@nestjs/cqrs';
-import { createMock } from '@golevelup/ts-jest';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { AuthService } from './auth.service';
 import { UserRegisterCommand } from './commands/impl/user-register.command';
@@ -11,44 +10,34 @@ import type { IAuthLogin, IAuthMe, IAuthRegister } from 'shared/interfaces/Auth'
 
 describe('AuthService', () => {
   let service: AuthService;
-  let cmdBus: CommandBus;
-  let queryBus: QueryBus;
+  let cmdBus: jest.Mocked<CommandBus>;
+  let queryBus: jest.Mocked<QueryBus>;
 
   beforeAll(async () => {
-    process.env.NODE_ENV = 'test';
+    const { unit, unitRef } = TestBed.create(AuthService).compile();
 
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [CqrsModule],
-      providers: [
-        AuthService,
-        {
-          provide: CommandBus,
-          useValue: createMock<CommandBus>(),
-        },
-        {
-          provide: QueryBus,
-          useValue: createMock<QueryBus>(),
-        },
-      ],
-    }).compile();
-
-    service = module.get<AuthService>(AuthService);
-    cmdBus = module.get<CommandBus>(CommandBus);
-    queryBus = module.get<QueryBus>(QueryBus);
+    service = unit;
+    cmdBus = unitRef.get<CommandBus>(CommandBus);
+    queryBus = unitRef.get<QueryBus>(QueryBus);
   });
 
   describe('login', () => {
     it('should return a user success login', async () => {
+      const mockBody = {
+        username: 'qytela',
+        password: '123123',
+      };
       const mockRes: IAuthLogin = {
         userId: 1,
         token: 'xxxxxxxxxxxx',
         roles: ['user'],
       };
 
-      jest.spyOn(queryBus, 'execute').mockResolvedValue(mockRes);
-      const result = await queryBus.execute(new GetUserLoginQuery(1));
+      queryBus.execute.mockResolvedValue(mockRes);
+      const result = await service.login(mockBody);
 
       expect(queryBus.execute).toHaveBeenCalled();
+      expect(queryBus.execute).toHaveBeenCalledWith(new GetUserLoginQuery(1));
       expect(result).toEqual(
         expect.objectContaining<IAuthLogin>({
           userId: expect.any(Number),
@@ -86,10 +75,11 @@ describe('AuthService', () => {
         password: '123123',
       };
 
-      jest.spyOn(cmdBus, 'execute').mockResolvedValue(mockRes);
-      const result = await cmdBus.execute(new UserRegisterCommand(mockBody));
+      cmdBus.execute.mockResolvedValue(mockRes);
+      const result = await service.register(mockBody);
 
       expect(cmdBus.execute).toHaveBeenCalled();
+      expect(cmdBus.execute).toHaveBeenCalledWith(new UserRegisterCommand(mockBody));
       expect(result).toEqual(
         expect.objectContaining({
           name: expect.any(String),

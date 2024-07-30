@@ -1,6 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestBed } from '@automock/jest';
 import { ClientKafka } from '@nestjs/microservices';
-import { createMock } from '@golevelup/ts-jest';
+import { of } from 'rxjs';
+import { AuthMeMock } from 'shared/mocks/user-mock';
 
 import { CategoryService } from './category.service';
 
@@ -9,36 +10,22 @@ import type { IMovieCategory, ICategory } from 'shared/interfaces/Movie';
 
 describe('CategoryService', () => {
   let service: CategoryService;
+  let authClient: jest.Mocked<ClientKafka>;
 
   beforeAll(async () => {
-    process.env.NODE_ENV = 'test';
+    const { unit, unitRef } = TestBed.create(CategoryService).compile();
 
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        CategoryService,
-        {
-          provide: 'AUTH_SERVICE',
-          useValue: createMock<ClientKafka>(),
-        },
-        {
-          provide: 'LOG_SERVICE',
-          useValue: createMock<ClientKafka>(),
-        },
-      ],
-    }).compile();
-
-    service = module.get<CategoryService>(CategoryService);
+    service = unit;
+    authClient = unitRef.get<ClientKafka>('AUTH_SERVICE');
   });
 
   describe('findAll', () => {
-    it('should return a movies', async () => {
-      const mockUser = <IAuthMe>{
-        userId: 1,
-        name: 'qytela',
-        roles: ['user'],
-      };
+    it('should return a categories', async () => {
+      authClient.send.mockReturnValue(of(AuthMeMock));
       const result = await service.findAll();
 
+      expect(authClient.send).toHaveBeenCalled();
+      expect(authClient.send).toHaveBeenCalledWith('auth.me', '{}');
       expect(result).toEqual(
         expect.objectContaining<IMovieCategory>({
           user: expect.objectContaining<IAuthMe>({

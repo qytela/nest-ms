@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestBed } from '@automock/jest';
 
 import { LogService } from './log.service';
 
@@ -6,13 +6,9 @@ describe('LogService', () => {
   let service: LogService;
 
   beforeAll(async () => {
-    process.env.NODE_ENV = 'test';
+    const { unit } = TestBed.create(LogService).compile();
 
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [LogService],
-    }).compile();
-
-    service = module.get<LogService>(LogService);
+    service = unit;
   });
 
   describe('save', () => {
