@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redpanda-console
+  namespace: kafka
+spec:
+  selector:
+    matchLabels:
+      app: redpanda-console
+  template:
+    metadata:
+      labels:
+        app: redpanda-console
+    spec:
+      containers:
+      - name: redpanda-console
+        image: docker.redpanda.com/redpandadata/console:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: redpanda-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redpanda-console
+  namespace: kafka
+spec:
+  selector:
+    app: redpanda-console
+  ports:
+  - port: 8181
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redpanda-configmap
+  namespace: kafka
+data:
+  KAFKA_BROKERS: "kafka.kafka.svc.cluster.local:9092"
+  KAFKA_SASL_ENABLED: "true"
+  KAFKA_SASL_USERNAME: "user1"
+  KAFKA_SASL_PASSWORD: "mQgRacGdio"
