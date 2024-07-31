@@ -21,10 +21,10 @@ describe('AppService', () => {
 
   describe('getData', () => {
     it('should return a message', async () => {
-      const mockReq = <Request>{
+      const mockReq = {
         url: '/api',
         method: 'GET',
-      };
+      } as Request;
       const result = await service.getData(mockReq);
 
       expect(promService.startHttpTimer).toHaveBeenCalled();
@@ -38,10 +38,10 @@ describe('AppService', () => {
 
   describe('testFail', () => {
     it('should return a message', async () => {
-      const mockReq = <Request>{
+      const mockReq = {
         url: '/api/test-fail',
         method: 'GET',
-      };
+      } as Request;
       const result = await service.testFail(mockReq);
 
       expect(promService.startHttpTimer).toHaveBeenCalled();
