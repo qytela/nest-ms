@@ -86,10 +86,10 @@ kubectl apply -f k8s/apps/api-gateway/service.yaml
 minikube dashboard
 ```
 
-4. Open new terminal tab and run tunnel.
+4. Open new terminal tab and forward api-gateway service.
 
 ```sh
-minikube tunnel
+./k8s/run-gateway.sh
 ```
 
 ## Flowchart
