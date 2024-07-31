@@ -79,57 +79,6 @@ services:
     depends_on:
       - zookeeper
 
-  # api-gateway:
-  #   build:
-  #     context: .
-  #     dockerfile: api-gateway.dockerfile
-  #   environment:
-  #     - PORT=8080
-  #     - KAFKA_ANONYMOUS=true
-  #     - KAFKA_BROKERS=kafka:9092,kafka-2:9093,kafka-3:9094
-  #   ports:
-  #     - 8080:8080
-  #   depends_on:
-  #     - kafka
-  #     - kafka-2
-  #     - kafka-3
-
-  # auth-service:
-  #   build:
-  #     context: .
-  #     dockerfile: auth-service.dockerfile
-  #   environment:
-  #     - KAFKA_ANONYMOUS=true
-  #     - KAFKA_BROKERS=kafka:9092,kafka-2:9093,kafka-3:9094
-  #   depends_on:
-  #     - kafka
-  #     - kafka-2
-  #     - kafka-3
-
-  # movie-service:
-  #   build:
-  #     context: .
-  #     dockerfile: movie-service.dockerfile
-  #   environment:
-  #     - KAFKA_ANONYMOUS=true
-  #     - KAFKA_BROKERS=kafka:9092,kafka-2:9093,kafka-3:9094
-  #   depends_on:
-  #     - kafka
-  #     - kafka-2
-  #     - kafka-3
-
-  # log-service:
-  #   build:
-  #     context: .
-  #     dockerfile: log-service.dockerfile
-  #   environment:
-  #     - KAFKA_ANONYMOUS=true
-  #     - KAFKA_BROKERS=kafka:9092,kafka-2:9093,kafka-3:9094
-  #   depends_on:
-  #     - kafka
-  #     - kafka-2
-  #     - kafka-3
-
 volumes:
   zookeeper-data:
     driver: local

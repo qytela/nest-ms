@@ -43,7 +43,14 @@ The services is:
 docker-compose up -d
 ```
 
-4. Rebuild services `./docker-run-apps.sh`.
+4. Run services:
+
+```sh
+nx serve api-gateway
+nx serve auth-service
+nx serve movie-service
+nx serve log-service
+```
 
 ## Test
 
