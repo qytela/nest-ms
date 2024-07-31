@@ -62,15 +62,26 @@ helm install kafka bitnami/kafka -n kafka -f k8s/kafka/kafka.yaml
 
 ### Service Deployment
 
-1. Modify the ConfigMap inside `k8s/apps/configmap.yaml` and apply.
+1. Get `KAFKA_PASSWORD` and modify the ConfigMap inside `k8s/apps/configmap.yaml` and apply.
 
 ```
 // get kafka password
 kubectl get secret kafka-user-passwords --namespace kafka -o jsonpath='{.data.client-passwords}' | base64 -d | cut -d , -f 1
 ```
 
+Apply ConfigMap:
+
 ```sh
 kubectl apply -f k8s/apps/configmap.yaml
+```
+
+Also configure ConfigMap inside `k8s/kafka/redpanda.yaml` replace `KAFKA_SASL_PASSWORD`.
+
+```sh
+kubectl apply -f k8s/kafka/redpanda.yaml
+
+// to open kafka dashboard
+./k8s/run-redpandaconsole.sh
 ```
 
 2. Apply each file \*.yaml inside `k8s/apps/{app}/deployment|service.yaml`, example:
